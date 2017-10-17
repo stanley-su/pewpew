@@ -154,17 +154,11 @@ const GAME = function() {
 	const animate = function() {
 		requestAnimationFrame(animate);
 		c.clearRect(0, 0, canvas.width, canvas.height);
-		projectiles.map((projectile, i, arr) => {
-			projectile.update();
+		projectiles.map(projectile => {
+			isOutsideScreen(projectile) ? projectiles.splice(i, 1) : projectile.update();
 		});
 		targets.map(target => {
-			target.update()
-			// if target moves outside the screen
-			if (target.v > 0 && target.x > canvas.width) {
-				target.x = -200;
-			} else if (target.v < 0 && target.x < 0) {
-				target.x = canvas.width + 200;
-			}
+			isOutsideScreen(target) ? targets.splice(i, 1) : target.update();
 		});
 		cannon.update();
 	};
@@ -178,4 +172,8 @@ const GAME = function() {
 	const cannon = new Cannon(30, '#fff');
 	const projectiles = [];
 	const targets = [];
+
+	// FUNCTION EXECUTION
+	init();
+	animate();
 }();
