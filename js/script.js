@@ -25,6 +25,78 @@ const GAME = function() {
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) <= (r1 + r2);
 	};
 
+	// GAME FUNCTIONS
+
+	// constructor for cannons
+	const Cannon = function(length, color) {
+		this.length = length;
+		this.color = color;
+		this.a;
+		this.baseX;
+		this.baseY;
+		this.endX;
+		this.endY;
+		this.update = function() {
+			this.a = Math.atan2(base.y - mouse.y, mouse.x - base.x);
+			this.baseX = base.x;
+			this.baseY = base.y;
+			this.endX = base.x + this.length * Math.cos(this.a);
+			this.endY =	base.y - this.length * Math.sin(this.a);
+			this.draw();
+		};
+		this.draw = function() {
+			c.beginPath();
+			c.moveTo(this.baseX, this.baseY);
+			c.lineTo(this.endX, this.endY);
+			c.lineWidth = 10;
+			c.strokeStyle = this.color;
+			c.stroke();
+			c.beginPath();
+			c.arc(this.baseX, this.baseY, 20, 0, Math.PI * 2);
+			c.fill();
+		};
+	};
+
+	// constructor for projectiles
+	const Projectile = function(x, y, v, a, r, color) {
+		this.x = x;
+		this.y = y;
+		this.v = v;
+		this.a = a;
+		this.r = r;
+		this.color = color;
+		this.update = function() {
+			this.x += this.v * Math.cos(this.a);
+			this.y -= this.v * Math.sin(this.a);
+			this.draw();
+		};
+		this.draw = function() {
+			c.beginPath();
+			c.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+			c.fillStyle = this.color;
+			c.fill();
+		};
+	};
+
+	// constructor for targets
+	const Target = function(x, y, v, r, color) {
+		this.x = x;
+		this.y = y;
+		this.v = v;
+		this.r = r;
+		this.color = color;
+		this.update = function() {
+			this.x += this.v;
+			this.draw();
+		};
+		this.draw = function() {
+			c.beginPath();
+			c.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+			c.fillStyle = this.color;
+			c.fill();
+		};
+	};
+
 	// VARIABLES
 
 	const canvas = document.getElementById('canvas');
