@@ -25,6 +25,12 @@ const GAME = function() {
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)) <= (r1 + r2);
 	};
 
+	// returns if an object is outside of the screen
+	const isOutsideScreen = function(x, y, r) {
+		return x + r < 0 || x - r > canvas.width ||
+					 y + r < 0 || y - r > canvas.height;
+	}
+
 	// GAME FUNCTIONS
 
 	// constructor for cannons
