@@ -119,6 +119,49 @@ const GAME = function() {
 		targets.push(new Target(x, y, v, r, color));
 	};
 
+	const resize = function() {
+		canvas.width = innerWidth;
+		canvas.height = innerHeight;
+		base.x = canvas.width / 2;
+		base.y = canvas.height;
+	};
+
+	const init = function() {
+		resize();
+		// add event listeners
+		window.addEventListener('resize', resize);
+		canvas.addEventListener('mousemove', function(e) {
+			mouse.x = e.x;
+			mouse.y = e.y;
+		});
+		window.addEventListener('keydown', function(e) {
+			if (e.which === 32) {
+				spawnProjectile();
+			}
+		});
+		// spawn targets
+		for (let i = 0; i < 100; ++i) {
+			spawnTarget();
+		}
+	};
+
+	const animate = function() {
+		requestAnimationFrame(animate);
+		c.clearRect(0, 0, canvas.width, canvas.height);
+		projectiles.map((projectile, i, arr) => {
+			projectile.update();
+		});
+		targets.map(target => {
+			target.update()
+			// if target moves outside the screen
+			if (target.v > 0 && target.x > canvas.width) {
+				target.x = -200;
+			} else if (target.v < 0 && target.x < 0) {
+				target.x = canvas.width + 200;
+			}
+		});
+		cannon.update();
+	};
 
 	// VARIABLES
 
