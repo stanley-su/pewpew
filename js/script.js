@@ -97,6 +97,29 @@ const GAME = function() {
 		};
 	};
 
+	// spawns a projectile
+	const spawnProjectile = function() {
+		let x = cannon.endX;
+		let y = cannon.endY;
+		let v = 20;
+		let a = Math.atan2(base.y - mouse.y, mouse.x - base.x);
+		let r = 10;
+		let color = '#fff';
+		projectiles.push(new Projectile(x, y, v, a, r, color));
+	};
+
+	// spawns a target
+	const spawnTarget = function() {
+		let v = getRandomInt(1, 10) * getRandomSign();
+		let r = getRandomInt(5, 10);
+		let color = '#fff';
+		let y = 100;
+		// if positive, place target at left side of screen, else the opposite
+		let x = (v > 0 ? -100 : canvas.width + 100);
+		targets.push(new Target(x, y, v, r, color));
+	};
+
+
 	// VARIABLES
 
 	const canvas = document.getElementById('canvas');
