@@ -27,9 +27,9 @@ const GAME = function() {
 
 	// returns if an object is outside of the screen
 	const isOutsideScreen = function(x, y, r) {
-		return x + r < 0 || x - r > canvas.width ||
-					 y + r < 0 || y - r > canvas.height;
-	}
+		return x + r < -200 || x - r > canvas.width + 200 ||
+					 y + r < -200 || y - r > canvas.height + 200;
+	};
 
 	// GAME FUNCTIONS
 
@@ -59,6 +59,7 @@ const GAME = function() {
 			c.stroke();
 			c.beginPath();
 			c.arc(this.baseX, this.baseY, 20, 0, Math.PI * 2);
+			c.fillStyle = this.color;
 			c.fill();
 		};
 	};
@@ -140,7 +141,7 @@ const GAME = function() {
 			mouse.x = e.x;
 			mouse.y = e.y;
 		});
-		window.addEventListener('keydown', function(e) {
+		window.addEventListener('keyup', function(e) {
 			if (e.which === 32) {
 				spawnProjectile();
 			}
@@ -154,13 +155,14 @@ const GAME = function() {
 	const animate = function() {
 		requestAnimationFrame(animate);
 		c.clearRect(0, 0, canvas.width, canvas.height);
-		projectiles.map(projectile => {
-			isOutsideScreen(projectile) ? projectiles.splice(i, 1) : projectile.update();
+		projectiles.map((projectile, i) => {
+			isOutsideScreen(projectile.x, projectile.y, projectile.r) ? projectiles.splice(i, 1) : projectile.update();
 		});
-		targets.map(target => {
-			isOutsideScreen(target) ? targets.splice(i, 1) : target.update();
+		targets.map((target, i) => {
+			isOutsideScreen(target.x, target.y, target.r) ? targets.splice(i, 1) : target.update();
 		});
 		cannon.update();
+		console.log(projectiles.length, targets.length);
 	};
 
 	// VARIABLES
